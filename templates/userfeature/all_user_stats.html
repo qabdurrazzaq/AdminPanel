@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}
+User Statistics
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h2>
+            Total Number of Users : {{users.count}}
+        </h2>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card card-box">
+            <div class="card-body">
+                <h5 class="card-title">SuperUsers</h5>
+                {% if superuser_count %}
+                {{superuser_count}}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card card-box">
+            <div class="card-body">
+                <h5 class="card-title">User With Add Privileges</h5>
+                {% if add_user_count %}
+                {{add_user_count}}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card card-box">
+            <div class="card-body">
+                <h5 class="card-title">User With Delete Privileges</h5>
+                {% if del_user_count %}
+                {{del_user_count}}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-sm-4">
+        <div class="card card-box">
+            <div class="card-body">
+                <h5 class="card-title">User With View Privileges</h5>
+                {% if view_user_count %}
+                {{view_user_count}}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card card-box">
+            <div class="card-body">
+                <h5 class="card-title">User With Edit Privileges</h5>
+                {% if edit_user_count %}
+                {{edit_user_count}}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="card card-box">
+            <div class="card-body">
+                <h5 class="card-title">User With Statistics Privileges</h5>
+                {% if user_stats_count %}
+                {{user_stats_count}}
+                {% else %}
+                0
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

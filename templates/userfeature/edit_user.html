@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit User
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        <h2>Edit User:</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Username
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        <button type="button" class="btn">
+                            <span class="micon icon-copy fa fa-edit"></span><span class="mtext"></span>
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr id="row_{{user.id}}">
+                    <td>
+                        {{user.username}}
+                    </td>
+                    <td>
+                        {{user.email}}
+                    </td>
+                    <td>
+                        {% if not user.is_superuser %}
+                            <a href="{% url 'edit_single_user' user.username %}" class="btn">
+                                <span class="micon icon-copy fa fa-edit"></span><span class="mtext"></span>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

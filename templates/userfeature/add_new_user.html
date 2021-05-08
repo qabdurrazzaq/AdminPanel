@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{ request.user|capfirst }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6" id="user_form">
+        <div class="card" style="border: none;">
+            <div class="card-body">
+                <form method="POST" id='user-form' enctype="multipart/form-data">{% csrf_token %}
+                    <h3 class="form-text text-center">Add New User</h3>
+                    <div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert" id="success_message">
+                        <strong>User Added Successfully!</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert" id="error_message">
+                        <strong>Something went wrong. Please provide correct data and try again!</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    {{form.as_p}}
+                    <input type="submit" value="Add New User" class="btn btn-lg btn-success btn-block">
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block jQuery %}
+<script>
+    $(document).ready(function(){
+        $('#user-form').on('submit', function(event){
+            event.preventDefault();
+            console.log("form submitted!")  
+            create_user();
+        });
+    });
+    function create_user() {
+        // e.preventDefault();
+        var form = $('user-form').serialize();
+        var add_user = false;
+        var del_user = false;
+        var edit_user = false
+        var view_user = false;
+        var user_stats = false;
+        $('input[name="add_user"]:checked').each(function() {
+            add_user = true;
+        });
+        $('input[name="edit_user"]:checked').each(function() {
+            edit_user = true;
+        });
+        $('input[name="del_user"]:checked').each(function() {
+            del_user = true;
+        });
+        $('input[name="view_user"]:checked').each(function() {
+            view_user=true;
+        });
+        $('input[name="user_stats"]:checked').each(function() {
+            user_stats = true;
+        });
+        $("#success_message").css("display", "none");
+        $("#error_message").css("display", "none");
+        $.ajax({
+            url : "{% url 'add_new_user' %}",
+            type : "POST",
+            data : {
+                username : $('#id_username').val() ,
+                password : $('#id_password').val() ,
+                email : $('#id_email').val() ,
+                first_name : $('#id_first_name').val() ,
+                mobile_no : $('#id_mobile_no').val(),
+                dept_name : $('#id_dept_name').val() ,
+                age : $('#id_age').val() ,
+                address : $('#id_address').val() ,
+                add_user: add_user,
+                del_user: del_user,
+                view_user: view_user,
+                edit_user: edit_user,
+                user_stats: user_stats,
+                csrfmiddlewaretoken: "{{ csrf_token }}",
+            },
+            success : function(json) {
+                console.log(json);
+                console.log("success");
+                $("#success_message").css("display", "block");
+            },
+
+            error : function(xhr,errmsg,err) {
+                $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                    " <a href='#' class='close'>&times;</a></div>");
+                console.log(xhr.status + ": " + xhr.responseText);
+                console.log(err);
+                console.log(errmsg);
+                $("#error_message").css("display", "block");
+            }
+        });
+    }
+    // };
+</script>
+{% endblock %}

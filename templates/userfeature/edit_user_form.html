@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit User
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-sm-3"></div>
+    <div class="col-sm-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert" id="success_message">
+                    <strong>User Updated Successfully!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="alert alert-success alert-dismissible fade show" style="display: none;" role="alert" id="error_message">
+                    <strong>Something went wrong. Please provide correct data and try again!</strong>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <h2 class="text-center">Edit User Permissions for {{user.username}}</h2>
+                <form method="POST" id="edit_user_form">{% csrf_token %}
+                    <label for="username">Username: </label>
+                    <input value="{{user.username}}" type="text" name="username" class="form-control" id="id_username" readonly>
+                    <label for="email">Email: </label>
+                    <input value="{{user.email}}" type="email" name="email" class="form-control" id="id_email"readonly>
+                    <label for="password">Password: </label>
+                    <input type="password" name="passsword" class="form-control" id="id_password">
+                    <label for="first_name">Name: </label>
+                    <input type="text" name="first_name" class="form-control" id="id_first_name">
+                    <label for="dept_name">Department: </label>
+                    <input type="text" name="dept_name" class="form-control" id="id_dept_name">
+                    <label for="mobile_no">Mobile Number: </label>
+                    <input type="text" name="mobile_no" class="form-control" id="id_mobile_no">
+                    <label for="age">Age: </label>
+                    <input type="text" name="age" class="form-control" id="id_age">
+                    <label for="address">Address: </label>
+                    <input type="text" name="address" class="form-control" id="id_address">
+                    <hr>
+                    <h4>Edit User Permissions</h4>
+                    <input type="checkbox" name="add_user" id="id_add_user"> Add User <br>
+                    <input type="checkbox" name="del_user" id="id_del_user"> Delete User <br>
+                    <input type="checkbox" name="view_user" id="id_view_user"> View User <br>
+                    <input type="checkbox" name="edit_user" id="id_edit_user"> Edit User <br>
+                    <input type="checkbox" name="user_stats" id="id_user_stats"> User Statistics
+                    <input type="submit" value="Update" class="btn btn-success btn-block" id="update_user">
+                </form>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block jQuery %}
+<script>
+    $(document).ready(function(){
+        $('#edit_user_form').submit(function(e){
+            e.preventDefault();
+            console.log('hitting')
+            var add_user = false;
+            var del_user = false;
+            var edit_user = false
+            var view_user = false;
+            var user_stats = false;
+            $('input[name="add_user"]:checked').each(function() {
+                add_user = true;
+            });
+            $('input[name="edit_user"]:checked').each(function() {
+                edit_user = true;
+            });
+            $('input[name="del_user"]:checked').each(function() {
+                del_user = true;
+            });
+            $('input[name="view_user"]:checked').each(function() {
+                view_user = true;
+            });
+            $('input[name="user_stats"]:checked').each(function() {
+                user_stats = true;
+            });
+            $.ajax({
+                url : "{% url 'update_user' %}",
+                type : "POST",
+                data : {
+                    username : $('#id_username').val() ,
+                    password : $('#id_password').val() ,
+                    email : $('#id_email').val() ,
+                    first_name : $('#id_first_name').val() ,
+                    mobile_no : $('#id_mobile_no').val() ,
+                    dept_name : $('#id_dept_name').val() ,
+                    age : $('#id_age').val() ,
+                    address : $('#id_address').val() ,
+                    add_user: add_user,
+                    del_user: del_user,
+                    view_user: view_user,
+                    edit_user: edit_user,
+                    user_stats: user_stats,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                },
+
+                success : function(json) {
+                    console.log(json);
+                    console.log("success");
+                    $("#success_message").css("display", "block");
+                },
+
+                error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>");
+                    console.log(xhr.status + ": " + xhr.responseText);
+                    $("#error_message").css("display", "block");
+                }
+            });
+        });
+    });
+    </script>
+{% endblock %}

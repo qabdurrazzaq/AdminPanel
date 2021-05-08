@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+View All Users
+{% endblock %}
+
+{% block content %}
+{% if users is not None %}
+<h2>Users Database</h2>
+<table class="data-table table">
+    <thead>
+        <tr>
+            <th class="table-plus">
+                Username
+            </th>
+            <th class="table-plus">
+                Name
+            </th>
+            <th class="table-plus">
+                Age
+            </th>
+            <th class="table-plus">
+                Department
+            </th>
+            <th class="table-plus">
+                Address
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            {% if user.username %}
+            <td class="table-plus">
+                {{user.username}}
+            </td>
+            {% endif %}
+            {% if user.first_name %}
+            <td class="table-plus">
+                {{user.first_name}}
+            </td>
+            {% endif %}
+            {% if user.age %}
+            <td class="table-plus">
+                {{user.age}}
+            </td>
+            {% endif %}
+            {% if user.dept_name %}
+            <td class="table-plus">
+                {{user.dept_name}}
+            </td>
+            {% endif %}
+            {% if user.address %}
+            <td class="table-plus">
+                {{user.address}}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+{% endblock %}

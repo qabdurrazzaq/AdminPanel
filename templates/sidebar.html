@@ -1,0 +1,67 @@
+{% load static %}
+<div class="left-side-bar">
+    <div class="brand-logo">
+        <a href="{% url 'user' %}">
+            <img src="" alt="" class="dark-logo">
+            <img src="{% static 'deskapp/vendors/images/deskapp-logo.svg' %}" alt="" class="dark-logo">
+            <img src="{% static 'deskapp/vendors/images/deskapp-logo-white.svg' %}" alt="" class="light-logo">
+        </a>
+        <div class="close-sidebar" data-toggle="left-sidebar-close">
+            <i class="ion-close-round"></i>
+        </div>
+    </div>
+    <div class="menu-block customscroll">
+        <div class="sidebar-menu">
+            <ul id="accordion-menu">
+                {% if request.user.is_authenticated %}
+                {% if request.user.add_user or request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'add_new_user' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-user-plus"></span><span class="mtext">Add New User</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if request.user.del_user or request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'del_user_view' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-remove"></span><span class="mtext">Delete User</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if request.user.view_user or request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'view_all_users' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-users"></span><span class="mtext">View All Users</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if request.user.edit_user or request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'edit_user' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-edit"></span><span class="mtext">Edit User</span>
+                    </a>
+                </li>
+                {% endif %}
+                {% if request.user.user_stats or request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'all_users_stats' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-bar-chart-o"></span><span class="mtext">User Statistics</span>
+                    </a>
+                </li>
+                {% endif %}
+                <li>
+                    {% if request.user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-sign-out"></span><span class="mtext">Logout</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'login' %}" class="dropdown-toggle no-arrow">
+                        <span class="micon icon-copy fa fa-sign-in"></span><span class="mtext">Login</span>
+                    </a>
+                    {% endif %}
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>
